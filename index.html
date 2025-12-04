@@ -6,113 +6,270 @@
 <title>For My Love ❤️</title>
 
 <style>
-    body {
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #ffb6c1, #ff89a6);
-        color: #fff;
-        text-align: center;
-        padding: 0;
-        margin: 0;
-        height: 100vh;
-        overflow: hidden;
-    }
+/* -----------------------------------------------------------
+   GENERAL STYLING
+----------------------------------------------------------- */
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
+    color: #fff;
+}
 
-    h1 {
-        margin-top: 40px;
-        font-size: 32px;
-        animation: fadeIn 1.5s;
-    }
+/* Background slideshow */
+.bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    z-index: -1;
+    animation: slide 30s infinite;
+    background-size: cover;
+    background-position: center;
+}
 
-    #gameBox {
-        margin-top: 60px;
-        padding: 20px;
-        font-size: 22px;
-        min-height: 150px;
-        animation: fadeIn 1.5s;
-    }
+@keyframes slide {
+    0%   { background-image: url('images/p1.jpg'); }
+    20%  { background-image: url('images/p2.jpg'); }
+    40%  { background-image: url('images/p3.jpg'); }
+    60%  { background-image: url('images/p4.jpg'); }
+    80%  { background-image: url('images/p5.jpg'); }
+    100% { background-image: url('images/p6.jpg'); }
+}
 
-    button {
-        padding: 15px 25px;
-        font-size: 20px;
-        border: none;
-        border-radius: 12px;
-        background: #fff;
-        color: #ff3d6b;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.3s;
-    }
+.container {
+    text-align: center;
+    padding: 20px;
+    margin-top: 60px;
+}
 
-    button:hover {
-        background: #ffe1ea;
-    }
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    color: #ff4d7a;
+    background: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background: #ffe0eb;
+}
 
-    #heartRain span {
-        position: absolute;
-        top: -50px;
-        font-size: 24px;
-        animation: fall linear forwards;
-        color: #ff004f;
-    }
+#story-box {
+    margin-top: 40px;
+    font-size: 22px;
+    padding: 20px;
+    min-height: 120px;
+    background: rgba(0,0,0,0.45);
+    border-radius: 15px;
+}
 
-    @keyframes fall {
-        from { transform: translateY(0); opacity: 1; }
-        to { transform: translateY(110vh); opacity: 0.3; }
-    }
+/* -----------------------------------------------------------
+   FLOATING IMAGES
+----------------------------------------------------------- */
+.floating {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    opacity: 0.9;
+    animation: float 10s infinite linear;
+}
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+@keyframes float {
+    from { transform: translateY(110vh) rotate(0deg); }
+    to   { transform: translateY(-10vh) rotate(360deg); }
+}
+
+/* HEART RAIN */
+#heartRain span {
+    position: absolute;
+    top: -50px;
+    font-size: 25px;
+    color: #ff003c;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to { transform: translateY(120vh); opacity: 0; }
+}
+
+/* PASSWORD SCREEN */
+#passwordScreen, #questionScreen, #mainGame {
+    display: none;
+}
+
+.screen {
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+}
+
+/* Fade animations */
+.fade {
+    animation: fadeIn 1.2s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
 
 </head>
 <body>
 
-<h1>💗 For My Beautiful Kinjal 💗</h1>
+<div class="bg"></div>
 
-<div id="gameBox">Are you ready for a small adventure? 😊</div>
+<!-- PASSWORD SCREEN -->
+<div id="passwordScreen" class="screen fade">
+    <h1>💗 Enter the secret password 💗</h1>
+    <p>(Hint: the month we met 😉)</p>
+    <input type="text" id="passInput" placeholder="Type password here">
+    <button onclick="checkPassword()">Unlock</button>
+</div>
 
-<button onclick="nextPart()">Start</button>
+<!-- QUESTION SCREEN -->
+<div id="questionScreen" class="screen fade">
+    <h1>Hey love… I have a question 💞</h1>
+    <h2>Do you love Mehdi? 😳</h2>
+    <div style="margin-top:20px;">
+        <button onclick="goToMain()">Yes 😘</button>
+        <button onclick="runAway(this)" id="noBtn">No 😂</button>
+    </div>
+</div>
 
-<div id="heartRain"></div>
+<!-- MAIN GAME -->
+<div id="mainGame" class="fade">
+    <div class="container">
+        <h1>💗 For My Beautiful Kinjal 💗</h1>
+        <div id="story-box" class="fade">Tap the button to start our story…</div>
+        <button onclick="nextPart()">Continue 💞</button>
+    </div>
+
+    <div id="heartRain"></div>
+</div>
+
+<audio id="music" src="https://cdn.pixabay.com/audio/2022/03/15/audio_3e69ac3f88.mp3"></audio>
 
 <script>
-    let step = 0;
+/* -----------------------------------------------------------
+   PASSWORD PAGE
+----------------------------------------------------------- */
+window.onload = () => {
+    document.getElementById("passwordScreen").style.display = "flex";
+};
 
-    const story = [
-        "Once upon a time… there was a boy named Mehdi.",
-        "He met a girl who was sweeter than every sunrise, and prettier than every sunset…",
-        "Her name was Kinjal. ❤️",
-        "Every day, he felt luckier to have her in his world.",
-        "So he made this little game… just to tell her something.",
-        "Are you ready to hear it? Tap again. 😊",
-        "Kinjal…",
-        "I love you more than words could ever explain. ❤️"
-    ];
+function checkPassword() {
+    const pass = document.getElementById("passInput").value.toLowerCase();
 
-    function nextPart() {
-        if (step < story.length) {
-            document.getElementById('gameBox').innerHTML = story[step];
-            step++;
+    if (pass.includes("january") || pass.includes("jan")) {
+        document.getElementById("passwordScreen").style.display = "none";
+        document.getElementById("questionScreen").style.display = "flex";
+    } else {
+        alert("Wrong password my love 😘 Try again!");
+    }
+}
 
-            if (step === story.length) {
-                startHeartRain();
-            }
+/* -----------------------------------------------------------
+   YES / NO GAME
+----------------------------------------------------------- */
+function runAway(btn) {
+    btn.style.position = "absolute";
+    btn.style.top = Math.random() * 80 + "vh";
+    btn.style.left = Math.random() * 80 + "vw";
+}
+
+function goToMain() {
+    document.getElementById("questionScreen").style.display = "none";
+    document.getElementById("mainGame").style.display = "block";
+
+    // Start floating photo spam
+    startFloatingImages();
+}
+
+/* -----------------------------------------------------------
+   STORY GAME
+----------------------------------------------------------- */
+let step = 0;
+
+const story = [
+    "Once upon a time… there was a boy.",
+    "A boy who never believed love was real until one day…",
+    "He met a girl who changed everything.",
+    "Her smile, her voice, her energy… it all felt like home.",
+    "That girl was you, Kinjal. ❤️",
+    "Every day with you feels like a blessing.",
+    "And Mehdi just wanted to say something important…",
+    "Kinjal…",
+    "I love you more than anything. Forever. 💗"
+];
+
+function nextPart() {
+    const box = document.getElementById("story-box");
+
+    if (step < story.length) {
+        box.innerHTML = story[step];
+        step++;
+
+        if (step === story.length) {
+            startHeartRain();
+            document.getElementById("music").play();
         }
     }
+}
 
-    function startHeartRain() {
-        setInterval(() => {
-            const heart = document.createElement("span");
-            heart.innerHTML = "❤️";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (2 + Math.random() * 3) + "s";
-            document.getElementById("heartRain").appendChild(heart);
+/* -----------------------------------------------------------
+   HEART RAIN EFFECT
+----------------------------------------------------------- */
+function startHeartRain() {
+    setInterval(() => {
+        const h = document.createElement("span");
+        h.innerHTML = "❤️";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.fontSize = (20 + Math.random() * 15) + "px";
+        h.style.animationDuration = (2 + Math.random() * 4) + "s";
+        document.getElementById("heartRain").appendChild(h);
 
-            setTimeout(() => heart.remove(), 5000);
-        }, 200);
-    }
+        setTimeout(() => h.remove(), 5000);
+    }, 200);
+}
+
+/* -----------------------------------------------------------
+   FLOATING IMAGES
+----------------------------------------------------------- */
+const imgList = ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg", "p5.jpg", "p6.jpg"];
+
+function startFloatingImages() {
+    setInterval(() => {
+        const img = document.createElement("img");
+        img.src = "images/" + imgList[Math.floor(Math.random() * imgList.length)];
+        img.classList.add("floating");
+        img.style.left = Math.random() * 100 + "vw";
+        img.style.animationDuration = (8 + Math.random() * 5) + "s";
+        img.style.opacity = 0.8;
+
+        document.body.appendChild(img);
+
+        setTimeout(() => img.remove(), 12000);
+    }, 1000);
+}
 </script>
 
 </body>
