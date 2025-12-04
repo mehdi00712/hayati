@@ -140,7 +140,7 @@ input {
 <!-- PASSWORD SCREEN -->
 <div id="passwordScreen" class="screen fade">
     <h1>💗 Enter the secret password 💗</h1>
-    <p>(Hint: the month we met 😉)</p>
+    <p>(Hint: the date that means the world to us 😘)</p>
     <input type="text" id="passInput" placeholder="Type password here">
     <button onclick="checkPassword()">Unlock</button>
 </div>
@@ -158,7 +158,7 @@ input {
 <!-- MAIN GAME -->
 <div id="mainGame" class="fade">
     <div class="container">
-        <h1>💗 For My Beautiful Kinjal 💗</h1>
+        <h1>💗 For My Beautiful Wafaa 💗</h1>
         <div id="story-box" class="fade">Tap the button to start our story…</div>
         <button onclick="nextPart()">Continue 💞</button>
     </div>
@@ -166,7 +166,8 @@ input {
     <div id="heartRain"></div>
 </div>
 
-<audio id="music" src="https://cdn.pixabay.com/audio/2022/03/15/audio_3e69ac3f88.mp3"></audio>
+<!-- 🎵 YOUR NEW BACKGROUND MUSIC -->
+<audio id="music" src="BeMyBaby.mp3"></audio>
 
 <script>
 /* -----------------------------------------------------------
@@ -177,13 +178,13 @@ window.onload = () => {
 };
 
 function checkPassword() {
-    const pass = document.getElementById("passInput").value.toLowerCase();
+    const pass = document.getElementById("passInput").value.trim();
 
-    if (pass.includes("january") || pass.includes("jan")) {
+    if (pass === "100625") {
         document.getElementById("passwordScreen").style.display = "none";
         document.getElementById("questionScreen").style.display = "flex";
     } else {
-        alert("Wrong password my love 😘 Try again!");
+        alert("Wrong password hayati 😘 Try again!");
     }
 }
 
@@ -214,11 +215,11 @@ const story = [
     "A boy who never believed love was real until one day…",
     "He met a girl who changed everything.",
     "Her smile, her voice, her energy… it all felt like home.",
-    "That girl was you, Kinjal. ❤️",
+    "That girl was you, Wafaa. ❤️",
     "Every day with you feels like a blessing.",
     "And Mehdi just wanted to say something important…",
-    "Kinjal…",
-    "I love you more than anything. Forever. 💗"
+    "Wafaa…",
+    "I love you more than anything. Forever hayati. 💗"
 ];
 
 function nextPart() {
