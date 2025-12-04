@@ -228,37 +228,38 @@ function goToMain() {
     document.getElementById("mainGame").style.display = "block";
 
     startFloatingImages();
-    startMusic();  // MUSIC STARTS EARLY
+    startMusic();  // Start music early (after Yes ❤️)
 
     document.getElementById("musicBtn").style.display = "block";
 }
 
 /* -----------------------------------------------------------
-   MUSIC SYSTEM (FADE-IN + AUTOPLAY FIX)
+   MUSIC SYSTEM (FADE-IN + AUTOPLAY FIX FOR GITHUB PAGES)
 ----------------------------------------------------------- */
 let music = document.getElementById("music");
 let isPlaying = false;
 music.volume = 0;
 
-// Autoplay-safe playback for GitHub Pages
+// Autoplay-safe playback
 function safePlay() {
     music.play().then(() => {
         isPlaying = true;
     }).catch(() => {
-        document.addEventListener(
-            "click",
-            () => {
-                music.play();
-                isPlaying = true;
-            },
-            { once: true }
-        );
+        // If blocked, wait for next user click
+        document.addEventListener("click", onceUserClick, { once: true });
+    });
+}
+
+function onceUserClick() {
+    music.play().then(() => {
+        isPlaying = true;
     });
 }
 
 function startMusic() {
     safePlay();
 
+    // Fade-in effect
     let vol = 0;
     let fade = setInterval(() => {
         if (vol < 0.35) {
