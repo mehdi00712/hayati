@@ -98,7 +98,7 @@ button:hover {
     to { transform: translateY(120vh); opacity: 0; }
 }
 
-/* PASSWORD SCREEN */
+/* PASSWORD & QUESTION SCREENS */
 #passwordScreen, #questionScreen, #mainGame {
     display: none;
 }
@@ -130,6 +130,29 @@ input {
     from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* -----------------------------------------------------------
+   MUSIC BUTTON
+----------------------------------------------------------- */
+#musicBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff4d7a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(255,0,80,0.6);
+    z-index: 999;
+    display: none;
+}
+#musicBtn:hover {
+    background: #ff6f98;
+}
 </style>
 
 </head>
@@ -151,7 +174,7 @@ input {
     <h2>Do you love Mehdi? 😳</h2>
     <div style="margin-top:20px;">
         <button onclick="goToMain()">Yes 😘</button>
-        <button onclick="runAway(this)" id="noBtn">No 😂</button>
+        <button onclick="runAway(this)">No 😂</button>
     </div>
 </div>
 
@@ -166,8 +189,11 @@ input {
     <div id="heartRain"></div>
 </div>
 
-<!-- 🎵 YOUR NEW BACKGROUND MUSIC -->
+<!-- AUDIO -->
 <audio id="music" src="BeMyBaby.mp3"></audio>
+
+<!-- MUSIC BUTTON -->
+<button id="musicBtn" onclick="toggleMusic()">🔊</button>
 
 <script>
 /* -----------------------------------------------------------
@@ -189,7 +215,7 @@ function checkPassword() {
 }
 
 /* -----------------------------------------------------------
-   YES / NO GAME
+   YES/NO GAME
 ----------------------------------------------------------- */
 function runAway(btn) {
     btn.style.position = "absolute";
@@ -201,8 +227,59 @@ function goToMain() {
     document.getElementById("questionScreen").style.display = "none";
     document.getElementById("mainGame").style.display = "block";
 
-    // Start floating photo spam
     startFloatingImages();
+    startMusic();  // MUSIC STARTS EARLY
+
+    document.getElementById("musicBtn").style.display = "block";
+}
+
+/* -----------------------------------------------------------
+   MUSIC SYSTEM (FADE-IN + AUTOPLAY FIX)
+----------------------------------------------------------- */
+let music = document.getElementById("music");
+let isPlaying = false;
+music.volume = 0;
+
+// Autoplay-safe playback for GitHub Pages
+function safePlay() {
+    music.play().then(() => {
+        isPlaying = true;
+    }).catch(() => {
+        document.addEventListener(
+            "click",
+            () => {
+                music.play();
+                isPlaying = true;
+            },
+            { once: true }
+        );
+    });
+}
+
+function startMusic() {
+    safePlay();
+
+    let vol = 0;
+    let fade = setInterval(() => {
+        if (vol < 0.35) {
+            vol += 0.02;
+            music.volume = vol;
+        } else {
+            clearInterval(fade);
+        }
+    }, 200);
+}
+
+function toggleMusic() {
+    if (isPlaying) {
+        music.pause();
+        isPlaying = false;
+        document.getElementById("musicBtn").innerHTML = "🔈";
+    } else {
+        safePlay();
+        isPlaying = true;
+        document.getElementById("musicBtn").innerHTML = "🔊";
+    }
 }
 
 /* -----------------------------------------------------------
@@ -231,13 +308,12 @@ function nextPart() {
 
         if (step === story.length) {
             startHeartRain();
-            document.getElementById("music").play();
         }
     }
 }
 
 /* -----------------------------------------------------------
-   HEART RAIN EFFECT
+   HEART RAIN
 ----------------------------------------------------------- */
 function startHeartRain() {
     setInterval(() => {
@@ -253,7 +329,7 @@ function startHeartRain() {
 }
 
 /* -----------------------------------------------------------
-   FLOATING IMAGES
+   FLOATING PHOTOS
 ----------------------------------------------------------- */
 const imgList = ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg", "p5.jpg", "p6.jpg"];
 
