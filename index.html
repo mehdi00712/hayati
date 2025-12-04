@@ -190,7 +190,7 @@ input {
 </div>
 
 <!-- AUDIO -->
-<audio id="music" src="BeMyBaby.mp3"></audio>
+<audio id="music" src="BeMyBaby_compressed.mp3"></audio>
 
 <!-- MUSIC BUTTON -->
 <button id="musicBtn" onclick="toggleMusic()">🔊</button>
@@ -228,24 +228,24 @@ function goToMain() {
     document.getElementById("mainGame").style.display = "block";
 
     startFloatingImages();
-    startMusic();  // Start music early (after Yes ❤️)
+    startMusic();  // Start music early
 
     document.getElementById("musicBtn").style.display = "block";
 }
 
 /* -----------------------------------------------------------
-   MUSIC SYSTEM (FADE-IN + AUTOPLAY FIX FOR GITHUB PAGES)
+   MUSIC SYSTEM (FADE-IN + AUTOPLAY FIX)
 ----------------------------------------------------------- */
 let music = document.getElementById("music");
 let isPlaying = false;
 music.volume = 0;
 
-// Autoplay-safe playback
+// Autoplay-safe playback for GitHub Pages
 function safePlay() {
     music.play().then(() => {
         isPlaying = true;
     }).catch(() => {
-        // If blocked, wait for next user click
+        // If blocked, wait for next user interaction
         document.addEventListener("click", onceUserClick, { once: true });
     });
 }
